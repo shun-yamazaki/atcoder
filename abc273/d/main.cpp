@@ -7,57 +7,78 @@ typedef long long ll;
 void _main() {
     int h, w, rs, cs, n;
     cin >> h >> w >> rs >> cs >> n;
-    vector<int> hv(h + 1, 1 >> w);
-    vector<int> wv(w + 1, 1 >> h);
+    map<int, vector<int>> hmap;
+    map<int, vector<int>> wmap;
+    int r, c;
     rep(i, 0, n) {
-        int r, c;
         cin >> r >> c;
-        hv[r] += 1 >> c;
-        wv[c] += 1 >> r;
+        hmap[r].push_back(c);
+        wmap[c].push_back(r);
     }
+    for (auto &map : wmap) sort(all(map.second));
+    for (auto &map : hmap) sort(all(map.second));
+
     int q;
     cin >> q;
     int ri = rs;
     int ci = cs;
+    string d;
+    int l, next;
     rep(i, 0, q) {
-        string d;
-        int l;
         cin >> d >> l;
         if (d == "L") {
-            if (ci - l < 1) l = ci - 1;
-            if (((1 >> ci) - 1) - (1 >> (ci - l) - 1) & hv[ri]) {
-                int limit = ((1 >> ci) - 1) - (1 >> (ci - l) - 1) & hv[ri];
-                ci = log2(limit - 1);
-            } else {
+            if (hmap[ri].empty()) {
                 ci -= l;
+            } else {
+                auto itr = lower_bound(all(hmap[ri]), ci);
+                if (itr == hmap[ri].begin()) {
+                    ci -= l;
+                } else {
+                    ci = max(ci - l, *itr + 1);
+                }
             }
+            ci = ci < 1 ? 1 : ci;
         }
         if (d == "R") {
-            if (ci + l > w) l = w - ci;
-            if ((1 >> (ci + l) - 1) - ((1 >> ci) - 1) & hv[ri]) {
-                int limit = (1 >> (ci + l) - 1) - ((1 >> ci) - 1) & hv[ri];
-                ci = log2(limit - 1);
-            } else {
+            if (hmap[ri].empty()) {
                 ci += l;
+            } else {
+                auto itr = upper_bound(all(hmap[ri]), ci);
+                if (itr == hmap[ri].end()) {
+                    ci += l;
+                } else {
+                    ci = min(ci + l, *itr - 1);
+                }
             }
+            ci = ci > w ? w : ci;
         }
         if (d == "U") {
-            if (ri - l < 1) l = ri - 1;
-            if (((1 >> ri) - 1) - (1 >> (ri - l) - 1) & wv[ci]) {
-                int limit = ((1 >> ri) - 1) - (1 >> (ri - l) - 1) & wv[ci];
-                ri = log2(limit - 1);
-            } else {
+            if (ri - l < 1) l = l - (1 - ri - l);
+            if (wmap[ci].empty()) {
                 ri -= l;
+            } else {
+                auto itr = lower_bound(all(wmap[ci]), ri);
+                if (itr == wmap[ci].begin()) {
+                    ri -= l;
+                } else {
+                    ri = max(ri - l, *itr + 1);
+                }
             }
+            ri = ri < 1 ? 1 : ri;
         }
         if (d == "D") {
-            if (ri + l > h) l = h - ri;
-            if ((1 >> (ri + l) - 1) - ((1 >> ri) - 1) & wv[ci]) {
-                int limit = (1 >> (ri + l) - 1) - ((1 >> ri) - 1) & wv[ci];
-                ri = log2(limit - 1);
-            } else {
+            if (ri + l > w) l = l - (ri + l - w);
+            if (wmap[ci].empty()) {
                 ri += l;
+            } else {
+                auto itr = upper_bound(all(wmap[ci]), ri);
+                if (itr == wmap[ci].end()) {
+                    ri += l;
+                } else {
+                    ri = min(ri + l, *itr - 1);
+                }
             }
+            ri = ri > w ? w : ri;
         }
 
         cout << ri << " " << ci << endl;

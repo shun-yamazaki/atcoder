@@ -5,27 +5,14 @@ using namespace std;
 typedef long long ll;
 
 void _main() {
-    int n;
+    int n, a;
     cin >> n;
-    vector<int> a(n + 1);
-    rep(i, 1, n + 1) cin >> a[i];
-    sort(all(a), greater<int>());
-
-    int before = a[0];
-    int count = 0;
-    int k = n;
-    rep(i, 0, n) {
-        if (before == a[i]) {
-            count++;
-        } else {
-            cout << count << endl;
-            count = 1;
-            before = a[i];
-            k--;
-        }
+    map<int, int> m;
+    rep(i, 1, n + 1) cin >> a, m[a]++;
+    for (auto i = m.rbegin(); i != m.rend(); i++) {
+        cout << i->second << endl;
     }
-    cout << count << endl;
-    rep(i, 1, k) cout << 0 << endl;
+    rep(i, 0, n - m.size()) cout << 0 << endl;
 }
 
 int main() {

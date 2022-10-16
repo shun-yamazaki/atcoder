@@ -8,16 +8,19 @@ void _main() {
     ll x;
     int k;
     cin >> x >> k;
+    ll pow10 = 1;
     rep(i, 0, k) {
-        ll y = 10;
-        rep(j, 0, i) y *= 10;
-        ll m = x % y;
-        if (m >= y / 10 * 5)
-            x = x - m + y;
-        else
+        x /= pow10;
+        ll m = x % 10;
+        if (m >= 5) {
+            x += 10 - m;
+        } else {
             x -= m;
+        }
+        x *= pow10;
+        pow10 *= 10;
     }
-    cout << (x < 0 ? 0 : x) << endl;
+    cout << x << endl;
 }
 
 int main() {

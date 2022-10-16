@@ -4,14 +4,17 @@ using namespace std;
 #define all(v) v.begin(), v.end()
 typedef long long ll;
 
+int f(int n) {
+    if (n == 0)
+        return 1;
+    else
+        return n * f(n - 1);
+}
+
 void _main() {
     int n;
     cin >> n;
-    int ans = 1;
-    rep(i, 0, n) {
-        ans *= i + 1;
-    }
-    cout << ans << endl;
+    cout << f(n) << endl;
 }
 
 int main() {
