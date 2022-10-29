@@ -6,7 +6,7 @@
     "new": "acc new $CONTEST",
     "test": "cd $CONTEST/$task && g++ main.cpp && a.out",
     "test:oj": "cd $CONTEST/$task && g++ main.cpp && oj t -d tests",
-    "task": "cd $CONTEST && acc add",
+    "next": "cd $CONTEST && acc add",
     "submit": "cd $CONTEST/$task && acc submit"
   }
 }
