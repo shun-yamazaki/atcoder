@@ -4,10 +4,12 @@ using namespace std;
 #define all(v) v.begin(), v.end()
 typedef long long ll;
 
-ll func(vector<ll> &f, ll k) {
+map<ll, ll> f;
+
+ll func(ll k) {
     if (f[k] == 0) {
-        f[k / 2] = f[k / 2] == 0 ? func(f, k / 2) : f[k / 2];
-        f[k / 3] = f[k / 3] == 0 ? func(f, k / 3) : f[k / 3];
+        f[k / 2] = f[k / 2] == 0 ? func(k / 2) : f[k / 2];
+        f[k / 3] = f[k / 3] == 0 ? func(k / 3) : f[k / 3];
         return f[k] = f[k / 2] + f[k / 3];
     } else {
         return f[k];
@@ -17,9 +19,8 @@ ll func(vector<ll> &f, ll k) {
 void _main() {
     ll n;
     cin >> n;
-    vector<ll> f(n + 1);
     f[0] = 1LL;
-    cout << func(f, n) << endl;
+    cout << func(n) << endl;
 }
 
 int main() {
