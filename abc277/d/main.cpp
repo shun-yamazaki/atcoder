@@ -4,42 +4,54 @@ using namespace std;
 #define all(v) v.begin(), v.end()
 typedef long long ll;
 
+// i 番目のカードから場に出し始めたときに手元に残るカードの合計
+vector<ll> s(200001);
+
 void _main() {
-    int n, m;
+    ll n, m, a;
     cin >> n >> m;
-    map<int, int> card;
+    map<ll, ll> mp;
     ll sum = 0;
     rep(i, 0, n) {
-        int a;
         cin >> a;
         sum += a;
-        card[a]++;
+        mp[a]++;
     }
-    // for (auto c : card) {
-    //     cout << c.first << " " << c.second << endl;
-    // }
-    ll max_num = 0;
-    ll tmp = 0;
-    int tmp_index = (*card.begin()).first;
-    for (auto c : card) {
-        if (c.first != tmp_index) {
-            max_num = max(max_num, tmp);
-            tmp = c.first * c.second;
-            tmp_index = c.first + 1;
-            continue;
-        }
-        tmp += c.first * c.second;
-        max_num = max(max_num, tmp);
-        tmp_index++;
-        if (tmp_index != m - 1) continue;
-        tmp_index = 0;
-        while (card[tmp_index] != 0) {
-            tmp += card[tmp_index] * tmp_index;
-            tmp_index++;
-        }
-        max_num = max(max_num, tmp);
+    vector<pair<ll, ll>> vec;
+    for (auto c : mp) {
+        vec.push_back(c);
     }
-    cout << sum - max_num << endl;
+
+    // カードに現れる整数に0~M-1がすべてある(=すべて場に出せる)
+    int k = vec.size();
+    if (k == m) {
+        cout << 0 << endl;
+        return;
+    }
+
+    // 整数が連続していない(=それ以上場に出せない)ところの index
+    int p;
+    for (int i = 0; i < k; i++) {
+        if (vec[(i + 1) % k].first != (vec[i].first + 1) % m) {
+            p = i;
+            break;
+        }
+    }
+    for (int i = 0; i < k; i++) {
+        int j = (p - i + k) % k;
+        if (vec[(j + 1) % k].first != (vec[j].first + 1) % m) {
+            // 整数が連続していない(=それ以上場に出せない)ので、全カードの合計からそのカードの分を引いた分が手元に残る
+            s[j] = sum - vec[j].first * vec[j].second;
+        } else {
+            // 次の整数がある(=まだ場に出せる)ので、次の数の手元に残るカードの分からそのカードの分を引いた分が手元に残る
+            s[j] = s[(j + 1) % k] - vec[j].first * vec[j].second;
+        }
+    }
+    ll ans = sum;
+    for (int i = 0; i < k; i++) {
+        ans = min(s[i], ans);
+    }
+    cout << ans << endl;
 }
 
 int main() {
