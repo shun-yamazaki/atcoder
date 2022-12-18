@@ -12,11 +12,11 @@ void _main() {
     int ans = 0;
     for (int i = 0; i < N - 1; i++) {
         for (int j = i + 1; j < N; j++) {
-            int tmp = 0;
+            bool ok = true;
             for (int k = 0; k < M; k++) {
-                if (S[i][k] == 'o' || S[j][k] == 'o') tmp++;
+                if (S[i][k] == 'x' && S[j][k] == 'x') ok = false;
             }
-            if (tmp == M) ans++;
+            if (ok) ans++;
         }
     }
     cout << ans << endl;

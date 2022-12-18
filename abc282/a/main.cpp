@@ -7,8 +7,8 @@ typedef long long ll;
 void _main() {
     int K;
     cin >> K;
-    string ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    cout << ABC.substr(0, K) << endl;
+    rep(i, 0, K) cout << char('A' + i);
+    cout << endl;
 }
 
 int main() {

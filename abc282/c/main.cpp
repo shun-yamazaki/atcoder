@@ -10,17 +10,12 @@ void _main() {
     cin >> N;
     cin >> S;
 
-    string ans;
     bool inner = false;
     rep(i, 0, N) {
-        char c = S[i];
-        if (c == '"') inner = !inner;
-        if (c == ',' && !inner)
-            ans += '.';
-        else
-            ans += c;
+        if (S[i] == '"') inner = !inner;
+        if (S[i] == ',' && !inner) S[i] = '.';
     }
-    cout << ans << endl;
+    cout << S << endl;
 }
 
 int main() {
